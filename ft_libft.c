@@ -6,7 +6,7 @@
 /*   By: mimatsub <mimatsub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 19:51:40 by mimatsub          #+#    #+#             */
-/*   Updated: 2022/06/20 02:58:02 by mimatsub         ###   ########.fr       */
+/*   Updated: 2022/06/20 04:05:21 by mimatsub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int count_digit(long n)
     }
     return (count);
 }
-
+/*
 char *ft_itoa_base(int n, int base)
 {
     char *buffer;
@@ -65,7 +65,7 @@ char *ft_itoa_base(int n, int base)
         li = li / base;
     }
     return (buffer);
-}
+}*/
 
 void ft_putstr_fd(char *s, int fd)
 {

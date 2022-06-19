@@ -6,12 +6,13 @@
 /*   By: mimatsub <mimatsub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 19:42:23 by mimatsub          #+#    #+#             */
-/*   Updated: 2022/06/20 03:07:34 by mimatsub         ###   ########.fr       */
+/*   Updated: 2022/06/20 04:07:09 by mimatsub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h" // static は必要？
 
+/*
 // 整数を10進で出力する int, short
 int ft_treat_int(int i) //int を超えた時の処理
 {
@@ -23,7 +24,7 @@ int ft_treat_int(int i) //int を超えた時の処理
     count = ft_strlen(str);
     free(str);
     return (count);
-}
+}*/
 
 void ft_put_base(unsigned long long num, char c, int base)
 {
@@ -42,6 +43,28 @@ void ft_put_base(unsigned long long num, char c, int base)
         ft_put_base(num % base, c, base);
     }
     return ;
+}
+
+// 整数を10進で出力する int, short
+int ft_treat_int(int i) //int を超えた時の処理
+{
+    size_t count;
+    int base;
+
+    if (!i)
+        i = 0;
+    base = 10;
+    ft_put_base((unsigned long long)i, 'i', base);
+    count = 0;
+    if (i == 0)
+        return (1);
+    while (i> 0)
+    {
+        i = i / base;
+        count ++;
+    }
+
+return (count);
 }
 
 // x:整数を16進で出力する
