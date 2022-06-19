@@ -6,13 +6,14 @@
 /*   By: mimatsub <mimatsub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 19:42:23 by mimatsub          #+#    #+#             */
-/*   Updated: 2022/06/19 23:59:38 by mimatsub         ###   ########.fr       */
+/*   Updated: 2022/06/20 03:07:34 by mimatsub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf.h" // static は必要？
 
-int ft_treat_int(int i) 
+// 整数を10進で出力する int, short
+int ft_treat_int(int i) //int を超えた時の処理
 {
     char *str;
     size_t count;
@@ -24,22 +25,7 @@ int ft_treat_int(int i)
     return (count);
 }
 
-/*
-static int ft_treat_uint(unsigned int ui)
-{
-    char *str;
-    size_t count;
-
-    str = ft_itoa_ui(ui, 10);
-    ft_putstr_fd(str, 1);
-    ft_strlen(str);
-    free(str);
-    return (count);
-}*/
-
-
-
-void ft_put_hexa(unsigned long long num, char c, int base)
+void ft_put_base(unsigned long long num, char c, int base)
 {
     if (num < (unsigned long long)base)
     {
@@ -52,39 +38,28 @@ void ft_put_hexa(unsigned long long num, char c, int base)
     }
     else 
     {
-        ft_put_hexa(num / base, c, base);
-        ft_put_hexa(num % base, c, base);
+        ft_put_base(num / base, c, base);
+        ft_put_base(num % base, c, base);
     }
     return ;
 }
 
-
-int ft_treat_uint(unsigned int ui, char c)
-{
-    size_t count;
-    int base;
-
-    base = 10;
-    ft_put_hexa((unsigned long long)ui, c, base);
-    if (ui == 0)
-        return (1);
-    while (ui > 0)
-    {
-        ui = ui / base;
-        count++;
-    }
-    return (count);
-}
-
-int ft_treat_hexa(unsigned int num, char c)
+// x:整数を16進で出力する
+// ui:符号なし整数を10進で出力する 
+// %iもまとめたい->int 4byte, long 8byte断念
+// why 'x' can use unsigned int?
+int ft_treat_base(unsigned int num, char c)
 {
     size_t count;
     int base;
 
     if (!num)
         num = 0;
-    base = 16;
-    ft_put_hexa((unsigned long long)num, c, base);
+    if (c =='x' || c == 'X')
+        base = 16;
+    else
+        base = 10;
+    ft_put_base((unsigned long long)num, c, base);
     count = 0;
     if (num == 0)
         return (1);
@@ -96,7 +71,7 @@ int ft_treat_hexa(unsigned int num, char c)
     return (count);
 }
 
-int ft_treat_point(unsigned long long p)
+int ft_treat_point(unsigned long long p) // unsigned int だとうまくいかない
 {
     size_t count;
 
@@ -107,7 +82,7 @@ int ft_treat_point(unsigned long long p)
     }
     ft_putstr_fd("0x", 1);
     count = 2;
-    ft_put_hexa(p, 'x', 16);
+    ft_put_base(p, 'x', 16);
     while (p > 0)
     {
         p = p / 16;
@@ -132,24 +107,23 @@ int ft_treat_char(int c)
 
 int ft_treat_something(char c, va_list ap)
 {
-    size_t count;
+    size_t count; //戻り値のcountはint?size_t統一
 
     count = 0;
-    if (c == 'c')
+    if (c == 'c') // １文字を出力する char
         count = ft_treat_char(va_arg(ap, int));
-    else if (c == 's')
+    else if (c == 's') // 文字列を出力する char *
         count = ft_treat_str(va_arg(ap, char *));
     else if (c == 'p')
-        count = ft_treat_point((unsigned long long)va_arg(ap, void *));
-    else if (c == 'x' || c == 'X')
-        count = ft_treat_hexa(va_arg(ap, unsigned int), c);
-    else if (c == 'i' || c == 'd')
+        count = ft_treat_point((unsigned long long)va_arg(ap, void *)); // void*->us long long とは
+    else if (c == 'x' || c == 'X' || c == 'u')  // 符号なし整数を10進で出力する unsigned int, unsigned short
+    // 整数を16進で出力する int, short, unsigned int, unsigned short 負の数についても
+        count = ft_treat_base(va_arg(ap, unsigned int), c); // why unsigned int? 整数なのに？
+    else if (c == 'i' || c == 'd') // 整数を10進で出力する int, short
         count = ft_treat_int(va_arg(ap, int));
-    else if (c == 'u')
-        count = ft_treat_uint(va_arg(ap, unsigned int), c);
     else if (c == '%')
-        count = ft_treat_char('%');
-    return (count);
+        count = ft_treat_char('%'); // 戻り値を持ちたい
+    return (count); // %の後ろが全く関係ない文字なら？->segfaさせたい // まだ
 }
 
 int ft_count_output(const char *input, va_list ap)
@@ -179,7 +153,7 @@ int ft_count_output(const char *input, va_list ap)
 int ft_printf(const char* input, ...)
 {
     va_list ap;
-    int count; 
+    size_t count; 
 
     count = 0;
     va_start(ap, input);
@@ -187,6 +161,7 @@ int ft_printf(const char* input, ...)
     va_end(ap);
     return (count);
 }
+
 /*
 #include <stdio.h>
 int main(void)

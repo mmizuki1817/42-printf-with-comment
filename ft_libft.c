@@ -6,7 +6,7 @@
 /*   By: mimatsub <mimatsub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 19:51:40 by mimatsub          #+#    #+#             */
-/*   Updated: 2022/06/19 22:47:17 by mimatsub         ###   ########.fr       */
+/*   Updated: 2022/06/20 02:58:02 by mimatsub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int count_digit(long n)
     return (count);
 }
 
-
 char *ft_itoa_base(int n, int base)
 {
     char *buffer;
@@ -67,28 +66,6 @@ char *ft_itoa_base(int n, int base)
     }
     return (buffer);
 }
-
-/*static char *ft_itoa_ui(unsigned int n, int base)
-{
-    char	*buffer;
-	int		count;
-	unsigned long long	li;
-
-	li = (long)n;
-	count = count_digit(li);
-	buffer = (char *)malloc(sizeof(char) * (count + 1));
-	if (buffer == NULL)
-		return (NULL);
-	buffer[count--] = '\0';
-    if (li == 0)
-		buffer[0] = '0';
-	while (li > 0)
-	{
-		buffer[count--] = (char)((li % base) + '0');
-		li = li / base;
-	}
-	return (buffer);
-}*/
 
 void ft_putstr_fd(char *s, int fd)
 {
