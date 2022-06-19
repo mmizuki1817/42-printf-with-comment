@@ -6,25 +6,11 @@
 /*   By: mimatsub <mimatsub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 19:42:23 by mimatsub          #+#    #+#             */
-/*   Updated: 2022/06/20 04:07:09 by mimatsub         ###   ########.fr       */
+/*   Updated: 2022/06/20 05:07:57 by mimatsub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h" // static は必要？
-
-/*
-// 整数を10進で出力する int, short
-int ft_treat_int(int i) //int を超えた時の処理
-{
-    char *str;
-    size_t count;
-
-    str = ft_itoa_base(i, 10);
-    ft_putstr_fd(str, 1);
-    count = ft_strlen(str);
-    free(str);
-    return (count);
-}*/
 
 void ft_put_base(unsigned long long num, char c, int base)
 {
@@ -50,32 +36,39 @@ int ft_treat_int(int i) //int を超えた時の処理
 {
     size_t count;
     int base;
+    unsigned long long li;
 
     if (!i)
         i = 0;
-    base = 10;
-    ft_put_base((unsigned long long)i, 'i', base);
     count = 0;
-    if (i == 0)
-        return (1);
-    while (i> 0)
+    li = (unsigned long long)i;
+    if (i < 0)
     {
-        i = i / base;
+        ft_putchar_fd('-', 1);
+        count = 1;
+        li = li * (-1);
+    }
+    base = 10;
+    ft_put_base(li, 'i', base);
+    if (li == 0)
+        return (1);
+    while (li> 0)
+    {
+        li = li / base;
         count ++;
     }
-
-return (count);
+    return (count);
 }
 
 // x:整数を16進で出力する
 // ui:符号なし整数を10進で出力する 
-// %iもまとめたい->int 4byte, long 8byte断念
 // why 'x' can use unsigned int?
 int ft_treat_base(unsigned int num, char c)
 {
     size_t count;
     int base;
 
+    printf("hoge%x %i \n", num, num); // num はuiなのになぜ-1
     if (!num)
         num = 0;
     if (c =='x' || c == 'X')
@@ -185,9 +178,10 @@ int ft_printf(const char* input, ...)
     return (count);
 }
 
-/*
+
 #include <stdio.h>
 int main(void)
 {
-    ft_printf("hoge");
-}*/
+    ft_printf("hoge%x\n", -1);
+    printf("hoge%x\n", -1);
+}

@@ -6,7 +6,7 @@
 /*   By: mimatsub <mimatsub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 19:44:22 by mimatsub          #+#    #+#             */
-/*   Updated: 2022/06/20 02:57:56 by mimatsub         ###   ########.fr       */
+/*   Updated: 2022/06/20 04:50:35 by mimatsub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include <stdlib.h>
 # include <unistd.h>
 
 int ft_treat_int(int i);
