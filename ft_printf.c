@@ -131,7 +131,7 @@ int ft_treat_something(char c, va_list ap)
     else if (c == 's') // 文字列を出力する char *
         count = ft_treat_str(va_arg(ap, char *));
     else if (c == 'p')
-        count = ft_treat_point((unsigned long long)va_arg(ap, void *)); // void*->us long long とは
+        count = ft_treat_point((unsigned long long)va_arg(ap, void *)); // void*->us long long とは なぜlonglong?intじゃない？
     else if (c == 'x' || c == 'X' || c == 'u')  // 符号なし整数を10進で出力する unsigned int, unsigned short
     // 整数を16進で出力する int, short, unsigned int, unsigned short 負の数についても
         count = ft_treat_base(va_arg(ap, unsigned int), c); // why unsigned int? 整数なのに？
